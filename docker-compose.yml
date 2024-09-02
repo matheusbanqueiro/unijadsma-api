@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  unijadsmanest-api:
+    build: .
+    container_name: unijadsmanest-api
+    ports:
+      - "9000:9000" # Mapeia a porta do serviço para o host
+    environment:
+      - NODE_ENV=production
+      - PORT=9000
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=unijadsma # Certifique-se de que a senha corresponde à do MYSQL_ROOT_PASSWORD
+      - DB_NAME=unijadsmaDB # Nome do banco de dados
+    volumes:
+      - /app/node_modules # Não mapeie o código fonte local para o contêiner
+
+  mysql:
+    image: mysql:8.0 # Usando a imagem oficial do MySQL
+    container_name: mysql
+    ports:
+      - "3306:3306" # Porta do MySQL mapeada para o host
+    environment:
+      MYSQL_ROOT_PASSWORD: unijadsma # Define a senha do usuário root
+      MYSQL_DATABASE: unijadsmaDB # Cria uma base de dados ao iniciar
+    volumes:
+      - mysql-data:/var/lib/mysql # Armazena os dados do MySQL
+
+volumes:
+  mysql-data:
